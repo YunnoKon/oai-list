@@ -1,0 +1,16 @@
+name: hallucination_detection
+channels:
+  - conda-forge
+  - defaults
+  - rocketce
+dependencies:
+  - python=3.11
+  - numpy=2.2.3
+  - scikit-learn=1.6.1
+  - xgboost=2.1.4
+  - pandas=2.2.3
+  - matplotlib=3.10.0
+  - gdown=5.2.0
+  - cloudpickle=3.1.1
+  - nbconvert=7.16.6
+  - jupyter
