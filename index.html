@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Problem Archive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 32px 40px;
+    }
+    header h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 4px; }
+    header p  { font-size: .85rem; color: #666; }
+
+    main {
+      max-width: 780px;
+      margin: 40px auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── SKELETON / STATE ── */
+    .state-box {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #aaa;
+      font-size: .85rem;
+    }
+    .spinner {
+      width: 22px; height: 22px;
+      border: 2px solid #e5e5e5;
+      border-top-color: #1a1a1a;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── COMPETITION CARD ── */
+    .competition {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .competition-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .competition-header h2 { font-size: .95rem; font-weight: 600; }
+    .competition-header span {
+      font-size: .75rem; color: #999;
+      background: #f3f3f3; padding: 2px 8px; border-radius: 20px;
+    }
+
+    /* ── YEAR GROUP ── */
+    .year-group { border-bottom: 1px solid #f0f0f0; }
+    .year-group:last-child { border-bottom: none; }
+    .year-label {
+      padding: 10px 20px;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: #aaa; background: #fafafa;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* ── PROBLEM ROW ── */
+    .problem-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 20px;
+      border-bottom: 1px solid #f5f5f5;
+      gap: 12px;
+    }
+    .problem-row:last-child { border-bottom: none; }
+    .problem-name   { font-size: .875rem; font-weight: 500; }
+    .problem-folder { font-size: .75rem; color: #aaa; margin-top: 2px; font-family: monospace; }
+
+    .row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: .78rem; font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px; border: 1px solid;
+      cursor: pointer; text-decoration: none;
+      transition: background .15s, color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .btn-download { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+    .btn-download:hover { background: #333; border-color: #333; }
+    .btn-browse   { background: #fff; color: #555; border-color: #ddd; }
+    .btn-browse:hover { border-color: #aaa; color: #1a1a1a; }
+
+    .empty-note {
+      padding: 14px 20px;
+      font-size: .8rem; color: #bbb; font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      font-size: .75rem; color: #bbb; padding-bottom: 40px;
+    }
+    footer a { color: #bbb; text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: #555; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Problem Archive</h1>
+  <p>Browse and download olympiad problem sets by competition and year.</p>
+</header>
+
+<main id="archive">
+  <div class="state-box">
+    <div class="spinner"></div>
+    Loading archive…
+  </div>
+</main>
+
+<footer>
+  Downloads via <a href="https://download-directory.github.io" target="_blank" rel="noopener">download-directory.github.io</a>
+</footer>
+
+<script>
+  // ── CONFIGURATION ─────────────────────────────────────────
+  const GITHUB_USER    = "YunnoKon";   // ← your GitHub username
+  const GITHUB_REPO    = "oai-list";       // ← your repository name
+  const BRANCH         = "main";            // ← branch (main / master)
+  const PROBLEMS_ROOT  = "problems";        // ← root folder to scan
+  // ──────────────────────────────────────────────────────────
+
+  const api  = path => `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${path}?ref=${BRANCH}`;
+  const view = path => `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${path}`;
+  const dl   = path => `https://download-directory.github.io/?url=https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${path}`;
+
+  // Fetch JSON from GitHub API
+  async function fetchDir(path) {
+    const res = await fetch(api(path));
+    if (!res.ok) throw new Error(`GitHub API error ${res.status} for "${path}"`);
+    const data = await res.json();
+    return data.filter(e => e.type === "dir");
+  }
+
+  // Turn a folder name like "adversarial_attack" → "Adversarial Attack"
+  function prettify(name) {
+    return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  // Build the full archive structure by querying the API
+  async function buildArchive() {
+    const competitions = await fetchDir(PROBLEMS_ROOT);
+
+    return Promise.all(competitions.map(async comp => {
+      const yearDirs = await fetchDir(comp.path);
+
+      // Check if the competition has year-like subdirs (all numeric)
+      const hasYears = yearDirs.length > 0 && yearDirs.every(d => /^\d{4}$/.test(d.name));
+
+      if (hasYears) {
+        const years = await Promise.all(yearDirs.map(async yr => {
+          const problems = await fetchDir(yr.path);
+          return { year: yr.name, problems };
+        }));
+        return { name: prettify(comp.name), slug: comp.name, path: comp.path, years };
+      } else {
+        // No year subdirs — treat direct children as problems
+        return {
+          name: prettify(comp.name), slug: comp.name, path: comp.path,
+          years: yearDirs.length > 0
+            ? [{ year: "—", problems: yearDirs }]
+            : []
+        };
+      }
+    }));
+  }
+
+  // Render helpers
+  function renderProblem(p) {
+    return `
+      <div class="problem-row">
+        <div>
+          <div class="problem-name">${prettify(p.name)}</div>
+          <div class="problem-folder">${p.name}</div>
+        </div>
+        <div class="row-actions">
+          <a class="btn btn-browse"   href="${view(p.path)}" target="_blank" rel="noopener">Browse</a>
+          <a class="btn btn-download" href="${dl(p.path)}"   target="_blank" rel="noopener">↓ Download</a>
+        </div>
+      </div>`;
+  }
+
+  function renderYear(yg) {
+    const rows = yg.problems.length === 0
+      ? `<p class="empty-note">No problems found for ${yg.year}.</p>`
+      : yg.problems.map(renderProblem).join('');
+    return `
+      <div class="year-group">
+        <div class="year-label">${yg.year}</div>
+        ${rows}
+      </div>`;
+  }
+
+  function renderComp(comp) {
+    const body = comp.years.length === 0
+      ? `<p class="empty-note">No problems indexed yet.</p>`
+      : comp.years.map(renderYear).join('');
+    return `
+      <div class="competition">
+        <div class="competition-header">
+          <h2>${comp.name}</h2>
+          <span>${comp.slug}</span>
+        </div>
+        ${body}
+      </div>`;
+  }
+
+  // Boot
+  async function init() {
+    const root = document.getElementById('archive');
+    try {
+      const archive = await buildArchive();
+      if (archive.length === 0) {
+        root.innerHTML = `<div class="state-box">No competitions found in <code>${PROBLEMS_ROOT}/</code>.</div>`;
+      } else {
+        root.innerHTML = archive.map(renderComp).join('');
+      }
+    } catch (err) {
+      root.innerHTML = `
+        <div class="state-box">
+          ⚠️ Could not load archive.<br><br>
+          <small style="color:#bbb">${err.message}<br>
+          Make sure GITHUB_USER, GITHUB_REPO, and BRANCH are set correctly,<br>
+          and that the repository is public.</small>
+        </div>`;
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
