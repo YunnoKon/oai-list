@@ -1,48 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Problem Archive</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:          #f9f9f9;
+      --surface:     #ffffff;
+      --border:      #e5e5e5;
+      --border-sub:  #f0f0f0;
+      --border-row:  #f5f5f5;
+      --text:        #1a1a1a;
+      --text-muted:  #666;
+      --text-dim:    #aaa;
+      --tag-bg:      #f3f3f3;
+      --year-bg:     #fafafa;
+      --input-bg:    #ffffff;
+      --toggle-bg:   #e5e5e5;
+      --toggle-knob: #fff;
+      --sol-text:    #2d7a4f;
+      --sol-border:  #a8d5b8;
+      --sol-hover:   #f0faf4;
+      --highlight:   #fef3c7;
+    }
+    [data-theme="dark"] {
+      --bg:          #111214;
+      --surface:     #1a1c20;
+      --border:      #2a2d34;
+      --border-sub:  #222428;
+      --border-row:  #1e2026;
+      --text:        #e8e8e8;
+      --text-muted:  #999;
+      --text-dim:    #555;
+      --tag-bg:      #252830;
+      --year-bg:     #161820;
+      --input-bg:    #1e2026;
+      --toggle-bg:   #3a3d45;
+      --toggle-knob: #fff;
+      --sol-text:    #4caf82;
+      --sol-border:  #2d5c3f;
+      --sol-hover:   #1a2e22;
+      --highlight:   #3d3310;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f9f9f9;
-      color: #1a1a1a;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      transition: background .2s, color .2s;
     }
 
+    /* ── HEADER ── */
     header {
-      background: #fff;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 32px 40px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    header h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 4px; }
-    header p  { font-size: .85rem; color: #666; }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .header-top h1 { font-size: 1.25rem; font-weight: 600; }
+    .header-top p  { font-size: .8rem; color: var(--text-muted); margin-top: 3px; }
 
+    /* Dark mode toggle */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      font-size: .78rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .toggle-track {
+      width: 36px; height: 20px;
+      background: var(--toggle-bg);
+      border-radius: 10px;
+      position: relative;
+      transition: background .2s;
+    }
+    [data-theme="dark"] .toggle-track { background: #4a7c5f; }
+    .toggle-knob {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 14px; height: 14px;
+      background: var(--toggle-knob);
+      border-radius: 50%;
+      transition: transform .2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .toggle-knob { transform: translateX(16px); }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 180px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 11px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      font-family: 'Inter', sans-serif;
+      font-size: .82rem;
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      outline: none;
+      transition: border-color .15s, background .2s;
+    }
+    .search-input::placeholder { color: var(--text-dim); }
+    .search-input:focus { border-color: #888; }
+
+    /* Filter pills */
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-pill {
+      font-family: 'Inter', sans-serif;
+      font-size: .75rem;
+      font-weight: 500;
+      padding: 6px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .filter-pill:hover { border-color: #888; color: var(--text); }
+    .filter-pill.active {
+      background: var(--text);
+      color: var(--surface);
+      border-color: var(--text);
+    }
+
+    /* ── MAIN ── */
     main {
       max-width: 780px;
-      margin: 40px auto;
+      margin: 32px auto;
       padding: 0 24px 80px;
     }
 
-    /* ── STATE ── */
+    /* ── EMPTY RESULTS ── */
     .state-box {
-      background: #fff;
-      border: 1px solid #e5e5e5;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 40px;
       text-align: center;
-      color: #aaa;
+      color: var(--text-dim);
       font-size: .85rem;
     }
     .spinner {
       width: 22px; height: 22px;
-      border: 2px solid #e5e5e5;
-      border-top-color: #1a1a1a;
+      border: 2px solid var(--border);
+      border-top-color: var(--text);
       border-radius: 50%;
       animation: spin .7s linear infinite;
       margin: 0 auto 14px;
@@ -51,34 +194,40 @@
 
     /* ── COMPETITION CARD ── */
     .competition {
-      background: #fff;
-      border: 1px solid #e5e5e5;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       overflow: hidden;
+      transition: background .2s, border-color .2s;
     }
     .competition-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid #e5e5e5;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .competition-header h2 { font-size: .95rem; font-weight: 600; }
-    .competition-header span {
-      font-size: .75rem; color: #999;
-      background: #f3f3f3; padding: 2px 8px; border-radius: 20px;
+    .competition-header h2 { font-size: .92rem; font-weight: 600; }
+    .competition-header .slug {
+      font-size: .72rem; color: var(--text-dim);
+      background: var(--tag-bg); padding: 2px 8px; border-radius: 20px;
+    }
+    .comp-count {
+      margin-left: auto;
+      font-size: .72rem;
+      color: var(--text-dim);
     }
 
     /* ── YEAR GROUP ── */
-    .year-group { border-bottom: 1px solid #f0f0f0; }
+    .year-group { border-bottom: 1px solid var(--border-sub); }
     .year-group:last-child { border-bottom: none; }
     .year-label {
-      padding: 10px 20px;
-      font-size: .72rem; font-weight: 600;
+      padding: 9px 20px;
+      font-size: .7rem; font-weight: 600;
       letter-spacing: .08em; text-transform: uppercase;
-      color: #aaa; background: #fafafa;
-      border-bottom: 1px solid #f0f0f0;
+      color: var(--text-dim); background: var(--year-bg);
+      border-bottom: 1px solid var(--border-sub);
     }
 
     /* ── PROBLEM ROW ── */
@@ -86,17 +235,27 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 13px 20px;
-      border-bottom: 1px solid #f5f5f5;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-row);
       gap: 12px;
     }
     .problem-row:last-child { border-bottom: none; }
+    .problem-row.hidden { display: none; }
+
     .problem-name   { font-size: .875rem; font-weight: 500; }
-    .problem-folder { font-size: .75rem; color: #aaa; margin-top: 2px; font-family: monospace; }
+    .problem-folder { font-size: .73rem; color: var(--text-dim); margin-top: 2px; font-family: monospace; }
+
+    /* search highlight */
+    mark {
+      background: var(--highlight);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
 
     .row-actions {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       flex-shrink: 0;
       flex-wrap: wrap;
       justify-content: flex-end;
@@ -105,42 +264,77 @@
     /* ── BUTTONS ── */
     .btn {
       font-family: 'Inter', sans-serif;
-      font-size: .78rem; font-weight: 500;
-      padding: 6px 14px;
+      font-size: .75rem; font-weight: 500;
+      padding: 5px 12px;
       border-radius: 6px; border: 1px solid;
       cursor: pointer; text-decoration: none;
       transition: background .15s, color .15s, border-color .15s;
       white-space: nowrap;
       display: inline-flex; align-items: center; gap: 5px;
     }
-    /* Browse */
-    .btn-browse   { background: #fff; color: #555; border-color: #ddd; }
-    .btn-browse:hover { border-color: #aaa; color: #1a1a1a; }
-    /* Problem download */
-    .btn-problem  { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-    .btn-problem:hover { background: #333; border-color: #333; }
-    /* Solution download */
-    .btn-solution { background: #fff; color: #2d7a4f; border-color: #a8d5b8; }
-    .btn-solution:hover { background: #f0faf4; border-color: #2d7a4f; }
+    .btn-browse  { background: var(--surface); color: var(--text-muted); border-color: var(--border); }
+    .btn-browse:hover { border-color: #888; color: var(--text); }
+    .btn-problem { background: var(--text); color: var(--surface); border-color: var(--text); }
+    .btn-problem:hover { opacity: .85; }
+    .btn-solution { background: var(--surface); color: var(--sol-text); border-color: var(--sol-border); }
+    .btn-solution:hover { background: var(--sol-hover); }
 
     .empty-note {
       padding: 14px 20px;
-      font-size: .8rem; color: #bbb; font-style: italic;
+      font-size: .8rem; color: var(--text-dim); font-style: italic;
+    }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-dim);
+      font-size: .85rem;
     }
 
     footer {
       text-align: center;
-      font-size: .75rem; color: #bbb; padding-bottom: 40px;
+      font-size: .75rem; color: var(--text-dim); padding-bottom: 40px;
     }
-    footer a { color: #bbb; text-decoration: underline; text-underline-offset: 3px; }
-    footer a:hover { color: #555; }
+    footer a { color: var(--text-dim); text-decoration: underline; text-underline-offset: 3px; }
+    footer a:hover { color: var(--text-muted); }
+
+    @media (max-width: 560px) {
+      header { padding: 20px 16px 0; }
+      main { padding: 0 12px 60px; margin-top: 20px; }
+      .problem-row { flex-direction: column; align-items: flex-start; }
+      .row-actions { width: 100%; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Problem Archive</h1>
-  <p>Browse and download olympiad problem sets by competition and year.</p>
+  <div class="header-top">
+    <div>
+      <h1>Problem Archive</h1>
+      <p>Browse and download olympiad problem sets by competition and year.</p>
+    </div>
+    <label class="theme-toggle" title="Toggle dark mode">
+      <span id="theme-label">Light</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <input type="checkbox" id="theme-check" style="display:none" />
+    </label>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" id="search" placeholder="Search problems…" autocomplete="off" />
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="solution">Has Solution</button>
+      <!-- Year filters injected after fetch -->
+    </div>
+  </div>
 </header>
 
 <main id="archive">
@@ -156,21 +350,17 @@
 
 <script>
   // ── CONFIGURATION ─────────────────────────────────────────
-  const GITHUB_USER      = "YunnoKon";   // ← your GitHub username
-  const GITHUB_REPO      = "oai-list";       // ← your repository name
-  const BRANCH           = "main";            // ← branch (main / master)
-  const PROBLEMS_ROOT    = "problems";        // ← problems root folder
-  const SOLUTIONS_ROOT   = "solutions";       // ← solutions root folder
+  const GITHUB_USER    = "YunnoKon";
+  const GITHUB_REPO    = "oai-list";
+  const BRANCH         = "main";
+  const PROBLEMS_ROOT  = "problems";
+  const SOLUTIONS_ROOT = "solutions";
   // ──────────────────────────────────────────────────────────
 
-  const apiUrl = path =>
-    `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${path}?ref=${BRANCH}`;
-  const ghView = path =>
-    `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${path}`;
-  const ghDl   = path =>
-    `https://download-directory.github.io/?url=https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${path}`;
+  const apiUrl = p => `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${p}?ref=${BRANCH}`;
+  const ghView = p => `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${p}`;
+  const ghDl   = p => `https://download-directory.github.io/?url=https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${p}`;
 
-  // Returns array of dir entries, or [] if path doesn't exist
   async function fetchDir(path) {
     const res = await fetch(apiUrl(path));
     if (res.status === 404) return [];
@@ -178,108 +368,192 @@
     const data = await res.json();
     return Array.isArray(data) ? data.filter(e => e.type === "dir") : [];
   }
-
-  // Check existence without throwing
-  async function pathExists(path) {
-    const res = await fetch(apiUrl(path));
-    return res.ok;
-  }
+  async function pathExists(path) { return (await fetch(apiUrl(path))).ok; }
 
   function prettify(name) {
     return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   }
 
+  // ── FETCH ─────────────────────────────────────────────────
   async function buildArchive() {
-    const competitions = await fetchDir(PROBLEMS_ROOT);
-
-    return Promise.all(competitions.map(async comp => {
-      const relPath   = comp.name; // e.g. "polish-oai"
-      const yearDirs  = await fetchDir(comp.path);
-      const hasYears  = yearDirs.length > 0 && yearDirs.every(d => /^\d{4}$/.test(d.name));
-
+    const comps = await fetchDir(PROBLEMS_ROOT);
+    return Promise.all(comps.map(async comp => {
+      const yearDirs = await fetchDir(comp.path);
+      const hasYears = yearDirs.length > 0 && yearDirs.every(d => /^\d{4}$/.test(d.name));
       const years = hasYears
         ? await Promise.all(yearDirs.map(async yr => {
             const problems = await fetchDir(yr.path);
-
-            // For each problem, check if a solution folder exists
-            const problemsWithSolution = await Promise.all(problems.map(async p => {
-              const solutionPath = `${SOLUTIONS_ROOT}/${relPath}/${yr.name}/${p.name}`;
-              const hasSolution  = await pathExists(solutionPath);
-              return { ...p, solutionPath: hasSolution ? solutionPath : null };
+            const withSol  = await Promise.all(problems.map(async p => {
+              const solPath    = `${SOLUTIONS_ROOT}/${comp.name}/${yr.name}/${p.name}`;
+              const hasSolution = await pathExists(solPath);
+              return { ...p, solutionPath: hasSolution ? solPath : null };
             }));
-
-            return { year: yr.name, problems: problemsWithSolution };
+            return { year: yr.name, problems: withSol };
           }))
         : [];
-
       return { name: prettify(comp.name), slug: comp.name, path: comp.path, years };
     }));
   }
 
-  // ── Render ────────────────────────────────────────────────
+  // ── STATE ─────────────────────────────────────────────────
+  let archiveData  = [];
+  let activeFilter = "all";
+  let searchQuery  = "";
 
-  function renderProblem(p) {
-    const solutionBtn = p.solutionPath
-      ? `<a class="btn btn-solution" href="${ghDl(p.solutionPath)}" target="_blank" rel="noopener">
-           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 21h18"/></svg>
-           Solution
-         </a>`
-      : '';
+  // ── RENDER ────────────────────────────────────────────────
+  const iconDl = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 21h18"/></svg>`;
 
-    return `
-      <div class="problem-row">
-        <div>
-          <div class="problem-name">${prettify(p.name)}</div>
-          <div class="problem-folder">${p.name}</div>
-        </div>
-        <div class="row-actions">
-          <a class="btn btn-browse"  href="${ghView(p.path)}" target="_blank" rel="noopener">Browse</a>
-          <a class="btn btn-problem" href="${ghDl(p.path)}"   target="_blank" rel="noopener">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 21h18"/></svg>
-            Problem
-          </a>
-          ${solutionBtn}
-        </div>
-      </div>`;
+  function highlight(text, query) {
+    if (!query) return text;
+    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    return text.replace(re, '<mark>$1</mark>');
   }
 
-  function renderYear(yg) {
-    const rows = yg.problems.length === 0
-      ? `<p class="empty-note">No problems found for ${yg.year}.</p>`
-      : yg.problems.map(renderProblem).join('');
-    return `
-      <div class="year-group">
-        <div class="year-label">${yg.year}</div>
-        ${rows}
-      </div>`;
+  function renderArchive() {
+    const root  = document.getElementById('archive');
+    const query = searchQuery.toLowerCase().trim();
+    let totalVisible = 0;
+
+    const html = archiveData.map(comp => {
+      const yearsHtml = comp.years.map(yg => {
+        const rowsHtml = yg.problems.map(p => {
+          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
+          const filterMatch = activeFilter === "all"
+            || (activeFilter === "solution" && p.solutionPath)
+            || activeFilter === yg.year;
+          const visible = nameMatch && filterMatch;
+          if (visible) totalVisible++;
+
+          const prettyName = prettify(p.name);
+          const solutionBtn = p.solutionPath
+            ? `<a class="btn btn-solution" href="${ghDl(p.solutionPath)}" target="_blank" rel="noopener">${iconDl} Solution</a>`
+            : '';
+
+          return `
+            <div class="problem-row${visible ? '' : ' hidden'}"
+                 data-year="${yg.year}"
+                 data-has-solution="${!!p.solutionPath}">
+              <div>
+                <div class="problem-name">${highlight(prettyName, query)}</div>
+                <div class="problem-folder">${highlight(p.name, query)}</div>
+              </div>
+              <div class="row-actions">
+                <a class="btn btn-browse"  href="${ghView(p.path)}" target="_blank" rel="noopener">Browse</a>
+                <a class="btn btn-problem" href="${ghDl(p.path)}"   target="_blank" rel="noopener">${iconDl} Problem</a>
+                ${solutionBtn}
+              </div>
+            </div>`;
+        }).join('');
+
+        const yearVisible = yg.problems.some(p => {
+          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
+          const filterMatch = activeFilter === "all"
+            || (activeFilter === "solution" && p.solutionPath)
+            || activeFilter === yg.year;
+          return nameMatch && filterMatch;
+        });
+
+        return `
+          <div class="year-group" style="${yearVisible ? '' : 'display:none'}">
+            <div class="year-label">${yg.year}</div>
+            ${rowsHtml || `<p class="empty-note">No problems found.</p>`}
+          </div>`;
+      }).join('');
+
+      const compVisible = comp.years.some(yg =>
+        yg.problems.some(p => {
+          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
+          const filterMatch = activeFilter === "all"
+            || (activeFilter === "solution" && p.solutionPath)
+            || activeFilter === yg.year;
+          return nameMatch && filterMatch;
+        })
+      );
+
+      const visCount = comp.years.reduce((acc, yg) =>
+        acc + yg.problems.filter(p => {
+          const nm = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
+          const fm = activeFilter === "all" || (activeFilter === "solution" && p.solutionPath) || activeFilter === yg.year;
+          return nm && fm;
+        }).length, 0);
+
+      return `
+        <div class="competition" style="${compVisible ? '' : 'display:none'}">
+          <div class="competition-header">
+            <h2>${comp.name}</h2>
+            <span class="slug">${comp.slug}</span>
+            <span class="comp-count">${visCount} problem${visCount !== 1 ? 's' : ''}</span>
+          </div>
+          ${yearsHtml || `<p class="empty-note">No problems indexed yet.</p>`}
+        </div>`;
+    }).join('');
+
+    root.innerHTML = totalVisible === 0 && (query || activeFilter !== "all")
+      ? `<div class="no-results">No problems match your search or filter.</div>`
+      : html;
   }
 
-  function renderComp(comp) {
-    const body = comp.years.length === 0
-      ? `<p class="empty-note">No problems indexed yet.</p>`
-      : comp.years.map(renderYear).join('');
-    return `
-      <div class="competition">
-        <div class="competition-header">
-          <h2>${comp.name}</h2>
-          <span>${comp.slug}</span>
-        </div>
-        ${body}
-      </div>`;
+  // ── YEAR FILTER PILLS ─────────────────────────────────────
+  function injectYearFilters() {
+    const years = [...new Set(
+      archiveData.flatMap(c => c.years.map(y => y.year))
+    )].sort((a, b) => b - a);
+
+    const filtersEl = document.getElementById('filters');
+    years.forEach(yr => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-pill';
+      btn.dataset.filter = yr;
+      btn.textContent = yr;
+      filtersEl.appendChild(btn);
+    });
   }
 
+  // ── EVENTS ────────────────────────────────────────────────
+  document.getElementById('filters').addEventListener('click', e => {
+    const pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeFilter = pill.dataset.filter;
+    renderArchive();
+  });
+
+  document.getElementById('search').addEventListener('input', e => {
+    searchQuery = e.target.value;
+    renderArchive();
+  });
+
+  // Dark mode
+  const html      = document.documentElement;
+  const check     = document.getElementById('theme-check');
+  const themeLabel = document.getElementById('theme-label');
+
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  html.dataset.theme = savedTheme;
+  check.checked = savedTheme === 'dark';
+  themeLabel.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
+
+  document.querySelector('.theme-toggle').addEventListener('click', () => {
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    check.checked = next === 'dark';
+    themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
+    localStorage.setItem('theme', next);
+  });
+
+  // ── BOOT ──────────────────────────────────────────────────
   async function init() {
     const root = document.getElementById('archive');
     try {
-      const archive = await buildArchive();
-      root.innerHTML = archive.length === 0
-        ? `<div class="state-box">No competitions found in <code>${PROBLEMS_ROOT}/</code>.</div>`
-        : archive.map(renderComp).join('');
+      archiveData = await buildArchive();
+      injectYearFilters();
+      renderArchive();
     } catch (err) {
       root.innerHTML = `
         <div class="state-box">
           ⚠️ Could not load archive.<br><br>
-          <small style="color:#bbb">${err.message}<br>
+          <small style="color:var(--text-dim)">${err.message}<br>
           Make sure GITHUB_USER, GITHUB_REPO, and BRANCH are set correctly<br>
           and the repository is public.</small>
         </div>`;
