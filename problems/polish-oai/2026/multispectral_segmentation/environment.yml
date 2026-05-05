@@ -1,0 +1,15 @@
+name: satelite_images
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python==3.11
+  - cudatoolkit
+  - pytorch==2.3.1
+  - numpy==1.26.4
+  - xgboost
+  - tqdm==4.66.2
+  - scikit-learn
+  - jupyter
+  - nbconvert

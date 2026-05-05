@@ -1,0 +1,13 @@
+name: convolution_filters
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - tqdm=4.67.1
+  - numpy=2.0.2
+  - nbconvert=7.16.6
+  - pip:
+    - torch --index-url https://download.pytorch.org/whl/cu130
