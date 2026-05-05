@@ -14,6 +14,7 @@ Most of the notebooks are translated with the help of LLM, excluding the noteboo
 ## Sources
 - [Hungarian AI Olympiad](https://github.com/Hungarian-AI-Olympiad/HAIO-Hungarian-AI-Olympiad)
 - [Polish AI Olympiad](https://github.com/OlimpiadaAI)
+- [Malaysia AI Olympiad](https://www.aiolympiad.my/past-problems)
 
 ## Contributions
 Any contributions are welcomed, including importing question and translation work.
