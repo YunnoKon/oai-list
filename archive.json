@@ -1,0 +1,137 @@
+[
+  {
+    "name": "Hungarian Oai",
+    "slug": "hungarian-oai",
+    "path": "problems/hungarian-oai",
+    "years": [
+      {
+        "year": "2025",
+        "problems": [
+          {
+            "name": "emoji_epics",
+            "pretty": "Emoji Epics",
+            "probPath": "problems/hungarian-oai/2025/emoji_epics",
+            "solPath": null
+          }
+        ]
+      },
+      {
+        "year": "2026",
+        "problems": [
+          {
+            "name": "production_line_quality_control",
+            "pretty": "Production Line Quality Control",
+            "probPath": "problems/hungarian-oai/2026/production_line_quality_control",
+            "solPath": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Malaysia Oai",
+    "slug": "malaysia-oai",
+    "path": "problems/malaysia-oai",
+    "years": [
+      {
+        "year": "2025",
+        "problems": [
+          {
+            "name": "dieting_network",
+            "pretty": "Dieting Network",
+            "probPath": "problems/malaysia-oai/2025/dieting_network",
+            "solPath": null
+          },
+          {
+            "name": "dropped_tarots",
+            "pretty": "Dropped Tarots",
+            "probPath": "problems/malaysia-oai/2025/dropped_tarots",
+            "solPath": null
+          },
+          {
+            "name": "flowers",
+            "pretty": "Flowers",
+            "probPath": "problems/malaysia-oai/2025/flowers",
+            "solPath": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Polish Oai",
+    "slug": "polish-oai",
+    "path": "problems/polish-oai",
+    "years": [
+      {
+        "year": "2024",
+        "problems": [
+          {
+            "name": "adversarial_attack",
+            "pretty": "Adversarial Attack",
+            "probPath": "problems/polish-oai/2024/adversarial_attack",
+            "solPath": null
+          },
+          {
+            "name": "imbalanced_classification",
+            "pretty": "Imbalanced Classification",
+            "probPath": "problems/polish-oai/2024/imbalanced_classification",
+            "solPath": null
+          }
+        ]
+      },
+      {
+        "year": "2025",
+        "problems": [
+          {
+            "name": "hallucination_detection",
+            "pretty": "Hallucination Detection",
+            "probPath": "problems/polish-oai/2025/hallucination_detection",
+            "solPath": "solutions/polish-oai/2025/hallucination_detection"
+          },
+          {
+            "name": "noise_in_data_labels",
+            "pretty": "Noise In Data Labels",
+            "probPath": "problems/polish-oai/2025/noise_in_data_labels",
+            "solPath": "solutions/polish-oai/2025/noise_in_data_labels"
+          }
+        ]
+      },
+      {
+        "year": "2026",
+        "problems": [
+          {
+            "name": "convolutional_filters",
+            "pretty": "Convolutional Filters",
+            "probPath": "problems/polish-oai/2026/convolutional_filters",
+            "solPath": "solutions/polish-oai/2026/convolutional_filters"
+          },
+          {
+            "name": "multilabel_classification",
+            "pretty": "Multilabel Classification",
+            "probPath": "problems/polish-oai/2026/multilabel_classification",
+            "solPath": null
+          },
+          {
+            "name": "multispectral_segmentation",
+            "pretty": "Multispectral Segmentation",
+            "probPath": "problems/polish-oai/2026/multispectral_segmentation",
+            "solPath": null
+          },
+          {
+            "name": "semantic_changes",
+            "pretty": "Semantic Changes",
+            "probPath": "problems/polish-oai/2026/semantic_changes",
+            "solPath": "solutions/polish-oai/2026/semantic_changes"
+          },
+          {
+            "name": "whisper_or_scream",
+            "pretty": "Whisper Or Scream",
+            "probPath": "problems/polish-oai/2026/whisper_or_scream",
+            "solPath": null
+          }
+        ]
+      }
+    ]
+  }
+]

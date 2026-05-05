@@ -6,47 +6,42 @@
   <title>Problem Archive</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    /* ── TOKENS ── */
     :root {
-      --bg:          #f9f9f9;
-      --surface:     #ffffff;
-      --border:      #e5e5e5;
-      --border-sub:  #f0f0f0;
-      --border-row:  #f5f5f5;
-      --text:        #1a1a1a;
-      --text-muted:  #666;
-      --text-dim:    #aaa;
-      --tag-bg:      #f3f3f3;
-      --year-bg:     #fafafa;
-      --input-bg:    #ffffff;
-      --toggle-bg:   #e5e5e5;
-      --toggle-knob: #fff;
-      --sol-text:    #2d7a4f;
-      --sol-border:  #a8d5b8;
-      --sol-hover:   #f0faf4;
-      --highlight:   #fef3c7;
+      --bg:         #f9f9f9;
+      --surface:    #ffffff;
+      --border:     #e5e5e5;
+      --border-sub: #f0f0f0;
+      --border-row: #f5f5f5;
+      --text:       #1a1a1a;
+      --text-muted: #666;
+      --text-dim:   #aaa;
+      --tag-bg:     #f3f3f3;
+      --year-bg:    #fafafa;
+      --input-bg:   #ffffff;
+      --sol-text:   #2d7a4f;
+      --sol-border: #a8d5b8;
+      --sol-hover:  #f0faf4;
+      --highlight:  #fef3c7;
     }
     [data-theme="dark"] {
-      --bg:          #111214;
-      --surface:     #1a1c20;
-      --border:      #2a2d34;
-      --border-sub:  #222428;
-      --border-row:  #1e2026;
-      --text:        #e8e8e8;
-      --text-muted:  #999;
-      --text-dim:    #555;
-      --tag-bg:      #252830;
-      --year-bg:     #161820;
-      --input-bg:    #1e2026;
-      --toggle-bg:   #3a3d45;
-      --toggle-knob: #fff;
-      --sol-text:    #4caf82;
-      --sol-border:  #2d5c3f;
-      --sol-hover:   #1a2e22;
-      --highlight:   #3d3310;
+      --bg:         #111214;
+      --surface:    #1a1c20;
+      --border:     #2a2d34;
+      --border-sub: #222428;
+      --border-row: #1e2026;
+      --text:       #e8e8e8;
+      --text-muted: #999;
+      --text-dim:   #555;
+      --tag-bg:     #252830;
+      --year-bg:    #161820;
+      --input-bg:   #1e2026;
+      --sol-text:   #4caf82;
+      --sol-border: #2d5c3f;
+      --sol-hover:  #1a2e22;
+      --highlight:  #3d3310;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -64,17 +59,18 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      transition: background .2s, border-color .2s;
     }
     .header-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .header-top h1 { font-size: 1.25rem; font-weight: 600; }
     .header-top p  { font-size: .8rem; color: var(--text-muted); margin-top: 3px; }
 
-    /* Dark mode toggle */
+    /* Dark toggle */
     .theme-toggle {
       display: flex;
       align-items: center;
@@ -87,7 +83,7 @@
     }
     .toggle-track {
       width: 36px; height: 20px;
-      background: var(--toggle-bg);
+      background: #d0d0d0;
       border-radius: 10px;
       position: relative;
       transition: background .2s;
@@ -97,31 +93,25 @@
       position: absolute;
       top: 3px; left: 3px;
       width: 14px; height: 14px;
-      background: var(--toggle-knob);
+      background: #fff;
       border-radius: 50%;
       transition: transform .2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,.25);
     }
     [data-theme="dark"] .toggle-knob { transform: translateX(16px); }
 
-    /* ── TOOLBAR ── */
+    /* Toolbar */
     .toolbar {
       display: flex;
       gap: 10px;
       padding-bottom: 16px;
       flex-wrap: wrap;
     }
-    .search-wrap {
-      position: relative;
-      flex: 1;
-      min-width: 180px;
-    }
+    .search-wrap { position: relative; flex: 1; min-width: 180px; }
     .search-wrap svg {
-      position: absolute;
-      left: 11px; top: 50%;
+      position: absolute; left: 11px; top: 50%;
       transform: translateY(-50%);
-      color: var(--text-dim);
-      pointer-events: none;
+      color: var(--text-dim); pointer-events: none;
     }
     .search-input {
       width: 100%;
@@ -133,22 +123,15 @@
       border: 1px solid var(--border);
       border-radius: 7px;
       outline: none;
-      transition: border-color .15s, background .2s;
+      transition: border-color .15s, background .2s, color .2s;
     }
     .search-input::placeholder { color: var(--text-dim); }
     .search-input:focus { border-color: #888; }
 
-    /* Filter pills */
-    .filters {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
     .filter-pill {
       font-family: 'Inter', sans-serif;
-      font-size: .75rem;
-      font-weight: 500;
+      font-size: .75rem; font-weight: 500;
       padding: 6px 13px;
       border-radius: 20px;
       border: 1px solid var(--border);
@@ -159,11 +142,7 @@
       white-space: nowrap;
     }
     .filter-pill:hover { border-color: #888; color: var(--text); }
-    .filter-pill.active {
-      background: var(--text);
-      color: var(--surface);
-      border-color: var(--text);
-    }
+    .filter-pill.active { background: var(--text); color: var(--surface); border-color: var(--text); }
 
     /* ── MAIN ── */
     main {
@@ -172,7 +151,6 @@
       padding: 0 24px 80px;
     }
 
-    /* ── EMPTY RESULTS ── */
     .state-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -192,7 +170,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── COMPETITION CARD ── */
+    /* Competition */
     .competition {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -209,17 +187,14 @@
       gap: 10px;
     }
     .competition-header h2 { font-size: .92rem; font-weight: 600; }
-    .competition-header .slug {
+    .comp-slug {
       font-size: .72rem; color: var(--text-dim);
       background: var(--tag-bg); padding: 2px 8px; border-radius: 20px;
+      font-family: monospace;
     }
-    .comp-count {
-      margin-left: auto;
-      font-size: .72rem;
-      color: var(--text-dim);
-    }
+    .comp-count { margin-left: auto; font-size: .72rem; color: var(--text-dim); }
 
-    /* ── YEAR GROUP ── */
+    /* Year */
     .year-group { border-bottom: 1px solid var(--border-sub); }
     .year-group:last-child { border-bottom: none; }
     .year-label {
@@ -230,7 +205,7 @@
       border-bottom: 1px solid var(--border-sub);
     }
 
-    /* ── PROBLEM ROW ── */
+    /* Problem row */
     .problem-row {
       display: flex;
       align-items: center;
@@ -240,12 +215,10 @@
       gap: 12px;
     }
     .problem-row:last-child { border-bottom: none; }
-    .problem-row.hidden { display: none; }
 
     .problem-name   { font-size: .875rem; font-weight: 500; }
     .problem-folder { font-size: .73rem; color: var(--text-dim); margin-top: 2px; font-family: monospace; }
 
-    /* search highlight */
     mark {
       background: var(--highlight);
       color: inherit;
@@ -261,7 +234,7 @@
       justify-content: flex-end;
     }
 
-    /* ── BUTTONS ── */
+    /* Buttons */
     .btn {
       font-family: 'Inter', sans-serif;
       font-size: .75rem; font-weight: 500;
@@ -272,25 +245,15 @@
       white-space: nowrap;
       display: inline-flex; align-items: center; gap: 5px;
     }
-    .btn-browse  { background: var(--surface); color: var(--text-muted); border-color: var(--border); }
+    .btn-browse   { background: var(--surface); color: var(--text-muted); border-color: var(--border); }
     .btn-browse:hover { border-color: #888; color: var(--text); }
-    .btn-problem { background: var(--text); color: var(--surface); border-color: var(--text); }
-    .btn-problem:hover { opacity: .85; }
+    .btn-problem  { background: var(--text); color: var(--surface); border-color: var(--text); }
+    .btn-problem:hover { opacity: .82; }
     .btn-solution { background: var(--surface); color: var(--sol-text); border-color: var(--sol-border); }
     .btn-solution:hover { background: var(--sol-hover); }
 
-    .empty-note {
-      padding: 14px 20px;
-      font-size: .8rem; color: var(--text-dim); font-style: italic;
-    }
-
-    /* No results */
-    .no-results {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-dim);
-      font-size: .85rem;
-    }
+    .empty-note { padding: 14px 20px; font-size: .8rem; color: var(--text-dim); font-style: italic; }
+    .no-results  { text-align: center; padding: 48px 20px; color: var(--text-dim); font-size: .85rem; }
 
     footer {
       text-align: center;
@@ -315,11 +278,10 @@
       <h1>Problem Archive</h1>
       <p>Browse and download olympiad problem sets by competition and year.</p>
     </div>
-    <label class="theme-toggle" title="Toggle dark mode">
-      <span id="theme-label">Light</span>
+    <div class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+      <span id="themeLabel">Light</span>
       <div class="toggle-track"><div class="toggle-knob"></div></div>
-      <input type="checkbox" id="theme-check" style="display:none" />
-    </label>
+    </div>
   </div>
 
   <div class="toolbar">
@@ -327,21 +289,17 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input class="search-input" type="text" id="search" placeholder="Search problems…" autocomplete="off" />
+      <input class="search-input" id="search" type="text" placeholder="Search problems…" autocomplete="off" />
     </div>
     <div class="filters" id="filters">
       <button class="filter-pill active" data-filter="all">All</button>
       <button class="filter-pill" data-filter="solution">Has Solution</button>
-      <!-- Year filters injected after fetch -->
     </div>
   </div>
 </header>
 
 <main id="archive">
-  <div class="state-box">
-    <div class="spinner"></div>
-    Loading archive…
-  </div>
+  <div class="state-box"><div class="spinner"></div>Loading archive…</div>
 </main>
 
 <footer>
@@ -349,173 +307,110 @@
 </footer>
 
 <script>
-  // ── CONFIGURATION ─────────────────────────────────────────
-  const GITHUB_USER    = "YunnoKon";
-  const GITHUB_REPO    = "oai-list";
-  const BRANCH         = "main";
-  const PROBLEMS_ROOT  = "problems";
-  const SOLUTIONS_ROOT = "solutions";
-  // ──────────────────────────────────────────────────────────
+  // ── CONFIG ───────────────────────────────────────────────
+  const GITHUB_USER = "YOUR_USERNAME";
+  const GITHUB_REPO = "YOUR_REPO";
+  const BRANCH      = "main";
+  // ─────────────────────────────────────────────────────────
 
-  const apiUrl = p => `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${p}?ref=${BRANCH}`;
   const ghView = p => `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${p}`;
   const ghDl   = p => `https://download-directory.github.io/?url=https://github.com/${GITHUB_USER}/${GITHUB_REPO}/tree/${BRANCH}/${p}`;
 
-  async function fetchDir(path) {
-    const res = await fetch(apiUrl(path));
-    if (res.status === 404) return [];
-    if (!res.ok) throw new Error(`GitHub API error ${res.status} for "${path}"`);
-    const data = await res.json();
-    return Array.isArray(data) ? data.filter(e => e.type === "dir") : [];
-  }
-  async function pathExists(path) { return (await fetch(apiUrl(path))).ok; }
-
-  function prettify(name) {
-    return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-  }
-
-  // ── FETCH ─────────────────────────────────────────────────
-  async function buildArchive() {
-    const comps = await fetchDir(PROBLEMS_ROOT);
-    return Promise.all(comps.map(async comp => {
-      const yearDirs = await fetchDir(comp.path);
-      const hasYears = yearDirs.length > 0 && yearDirs.every(d => /^\d{4}$/.test(d.name));
-      const years = hasYears
-        ? await Promise.all(yearDirs.map(async yr => {
-            const problems = await fetchDir(yr.path);
-            const withSol  = await Promise.all(problems.map(async p => {
-              const solPath    = `${SOLUTIONS_ROOT}/${comp.name}/${yr.name}/${p.name}`;
-              const hasSolution = await pathExists(solPath);
-              return { ...p, solutionPath: hasSolution ? solPath : null };
-            }));
-            return { year: yr.name, problems: withSol };
-          }))
-        : [];
-      return { name: prettify(comp.name), slug: comp.name, path: comp.path, years };
-    }));
-  }
-
-  // ── STATE ─────────────────────────────────────────────────
   let archiveData  = [];
   let activeFilter = "all";
   let searchQuery  = "";
 
-  // ── RENDER ────────────────────────────────────────────────
   const iconDl = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 21h18"/></svg>`;
 
-  function highlight(text, query) {
-    if (!query) return text;
-    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  function highlight(text, q) {
+    if (!q) return text;
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
     return text.replace(re, '<mark>$1</mark>');
+  }
+
+  function isVisible(p, yg) {
+    const q  = searchQuery.toLowerCase();
+    const nm = !q || p.name.toLowerCase().includes(q) || p.pretty.toLowerCase().includes(q);
+    const fm = activeFilter === "all"
+      || (activeFilter === "solution" && p.solPath)
+      || activeFilter === yg.year;
+    return nm && fm;
   }
 
   function renderArchive() {
     const root  = document.getElementById('archive');
-    const query = searchQuery.toLowerCase().trim();
-    let totalVisible = 0;
+    const q     = searchQuery.toLowerCase();
+    let total   = 0;
 
     const html = archiveData.map(comp => {
+      const visProbs = comp.years.flatMap(yg => yg.problems.filter(p => isVisible(p, yg)));
+      if (visProbs.length === 0) return '';
+      total += visProbs.length;
+
       const yearsHtml = comp.years.map(yg => {
-        const rowsHtml = yg.problems.map(p => {
-          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
-          const filterMatch = activeFilter === "all"
-            || (activeFilter === "solution" && p.solutionPath)
-            || activeFilter === yg.year;
-          const visible = nameMatch && filterMatch;
-          if (visible) totalVisible++;
+        const rows = yg.problems.filter(p => isVisible(p, yg));
+        if (rows.length === 0) return '';
 
-          const prettyName = prettify(p.name);
-          const solutionBtn = p.solutionPath
-            ? `<a class="btn btn-solution" href="${ghDl(p.solutionPath)}" target="_blank" rel="noopener">${iconDl} Solution</a>`
-            : '';
-
-          return `
-            <div class="problem-row${visible ? '' : ' hidden'}"
-                 data-year="${yg.year}"
-                 data-has-solution="${!!p.solutionPath}">
-              <div>
-                <div class="problem-name">${highlight(prettyName, query)}</div>
-                <div class="problem-folder">${highlight(p.name, query)}</div>
-              </div>
-              <div class="row-actions">
-                <a class="btn btn-browse"  href="${ghView(p.path)}" target="_blank" rel="noopener">Browse</a>
-                <a class="btn btn-problem" href="${ghDl(p.path)}"   target="_blank" rel="noopener">${iconDl} Problem</a>
-                ${solutionBtn}
-              </div>
-            </div>`;
-        }).join('');
-
-        const yearVisible = yg.problems.some(p => {
-          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
-          const filterMatch = activeFilter === "all"
-            || (activeFilter === "solution" && p.solutionPath)
-            || activeFilter === yg.year;
-          return nameMatch && filterMatch;
-        });
+        const rowsHtml = rows.map(p => `
+          <div class="problem-row">
+            <div>
+              <div class="problem-name">${highlight(p.pretty, q)}</div>
+              <div class="problem-folder">${highlight(p.name, q)}</div>
+            </div>
+            <div class="row-actions">
+              <a class="btn btn-browse"  href="${ghView(p.probPath)}" target="_blank" rel="noopener">Browse</a>
+              <a class="btn btn-problem" href="${ghDl(p.probPath)}"   target="_blank" rel="noopener">${iconDl} Problem</a>
+              ${p.solPath
+                ? `<a class="btn btn-solution" href="${ghDl(p.solPath)}" target="_blank" rel="noopener">${iconDl} Solution</a>`
+                : ''}
+            </div>
+          </div>`).join('');
 
         return `
-          <div class="year-group" style="${yearVisible ? '' : 'display:none'}">
+          <div class="year-group">
             <div class="year-label">${yg.year}</div>
-            ${rowsHtml || `<p class="empty-note">No problems found.</p>`}
+            ${rowsHtml}
           </div>`;
       }).join('');
 
-      const compVisible = comp.years.some(yg =>
-        yg.problems.some(p => {
-          const nameMatch   = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
-          const filterMatch = activeFilter === "all"
-            || (activeFilter === "solution" && p.solutionPath)
-            || activeFilter === yg.year;
-          return nameMatch && filterMatch;
-        })
-      );
-
-      const visCount = comp.years.reduce((acc, yg) =>
-        acc + yg.problems.filter(p => {
-          const nm = p.name.toLowerCase().includes(query) || prettify(p.name).toLowerCase().includes(query);
-          const fm = activeFilter === "all" || (activeFilter === "solution" && p.solutionPath) || activeFilter === yg.year;
-          return nm && fm;
-        }).length, 0);
-
       return `
-        <div class="competition" style="${compVisible ? '' : 'display:none'}">
+        <div class="competition">
           <div class="competition-header">
             <h2>${comp.name}</h2>
-            <span class="slug">${comp.slug}</span>
-            <span class="comp-count">${visCount} problem${visCount !== 1 ? 's' : ''}</span>
+            <span class="comp-slug">${comp.slug}</span>
+            <span class="comp-count">${visProbs.length} problem${visProbs.length !== 1 ? 's' : ''}</span>
           </div>
-          ${yearsHtml || `<p class="empty-note">No problems indexed yet.</p>`}
+          ${yearsHtml}
         </div>`;
     }).join('');
 
-    root.innerHTML = totalVisible === 0 && (query || activeFilter !== "all")
+    root.innerHTML = total === 0
       ? `<div class="no-results">No problems match your search or filter.</div>`
       : html;
   }
 
-  // ── YEAR FILTER PILLS ─────────────────────────────────────
   function injectYearFilters() {
     const years = [...new Set(
       archiveData.flatMap(c => c.years.map(y => y.year))
     )].sort((a, b) => b - a);
 
-    const filtersEl = document.getElementById('filters');
+    const fil = document.getElementById('filters');
     years.forEach(yr => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-pill';
-      btn.dataset.filter = yr;
-      btn.textContent = yr;
-      filtersEl.appendChild(btn);
+      const b = document.createElement('button');
+      b.className = 'filter-pill';
+      b.dataset.filter = yr;
+      b.textContent = yr;
+      fil.appendChild(b);
     });
   }
 
-  // ── EVENTS ────────────────────────────────────────────────
+  // Events
   document.getElementById('filters').addEventListener('click', e => {
-    const pill = e.target.closest('.filter-pill');
-    if (!pill) return;
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    pill.classList.add('active');
-    activeFilter = pill.dataset.filter;
+    const p = e.target.closest('.filter-pill');
+    if (!p) return;
+    document.querySelectorAll('.filter-pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    activeFilter = p.dataset.filter;
     renderArchive();
   });
 
@@ -525,37 +420,31 @@
   });
 
   // Dark mode
-  const html      = document.documentElement;
-  const check     = document.getElementById('theme-check');
-  const themeLabel = document.getElementById('theme-label');
+  const htmlEl = document.documentElement;
+  const saved  = localStorage.getItem('theme') || 'light';
+  htmlEl.dataset.theme = saved;
+  document.getElementById('themeLabel').textContent = saved === 'dark' ? 'Dark' : 'Light';
 
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  html.dataset.theme = savedTheme;
-  check.checked = savedTheme === 'dark';
-  themeLabel.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
-
-  document.querySelector('.theme-toggle').addEventListener('click', () => {
-    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
-    html.dataset.theme = next;
-    check.checked = next === 'dark';
-    themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = htmlEl.dataset.theme === 'dark' ? 'light' : 'dark';
+    htmlEl.dataset.theme = next;
+    document.getElementById('themeLabel').textContent = next === 'dark' ? 'Dark' : 'Light';
     localStorage.setItem('theme', next);
   });
 
-  // ── BOOT ──────────────────────────────────────────────────
+  // Boot — load static archive.json
   async function init() {
     const root = document.getElementById('archive');
     try {
-      archiveData = await buildArchive();
+      const res = await fetch('./archive.json');
+      if (!res.ok) throw new Error(`Could not load archive.json (${res.status}). Did you run: node build.js ?`);
+      archiveData = await res.json();
       injectYearFilters();
       renderArchive();
     } catch (err) {
       root.innerHTML = `
         <div class="state-box">
-          ⚠️ Could not load archive.<br><br>
-          <small style="color:var(--text-dim)">${err.message}<br>
-          Make sure GITHUB_USER, GITHUB_REPO, and BRANCH are set correctly<br>
-          and the repository is public.</small>
+          ⚠️ ${err.message}
         </div>`;
     }
   }
