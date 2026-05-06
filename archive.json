@@ -125,6 +125,12 @@
             "solPath": null
           },
           {
+            "name": "painter_optimizer",
+            "pretty": "Painter Optimizer",
+            "probPath": "problems/polish-oai/2026/painter_optimizer",
+            "solPath": null
+          },
+          {
             "name": "pixels",
             "pretty": "Pixels",
             "probPath": "problems/polish-oai/2026/pixels",
