@@ -107,6 +107,12 @@
             "solPath": "solutions/polish-oai/2026/convolutional_filters"
           },
           {
+            "name": "decision_localization",
+            "pretty": "Decision Localization",
+            "probPath": "problems/polish-oai/2026/decision_localization",
+            "solPath": null
+          },
+          {
             "name": "multilabel_classification",
             "pretty": "Multilabel Classification",
             "probPath": "problems/polish-oai/2026/multilabel_classification",
@@ -116,6 +122,12 @@
             "name": "multispectral_segmentation",
             "pretty": "Multispectral Segmentation",
             "probPath": "problems/polish-oai/2026/multispectral_segmentation",
+            "solPath": null
+          },
+          {
+            "name": "pixels",
+            "pretty": "Pixels",
+            "probPath": "problems/polish-oai/2026/pixels",
             "solPath": null
           },
           {
