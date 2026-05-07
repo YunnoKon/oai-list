@@ -143,6 +143,12 @@
             "solPath": "solutions/polish-oai/2026/semantic_changes"
           },
           {
+            "name": "the_void",
+            "pretty": "The Void",
+            "probPath": "problems/polish-oai/2026/the_void",
+            "solPath": null
+          },
+          {
             "name": "whisper_or_scream",
             "pretty": "Whisper Or Scream",
             "probPath": "problems/polish-oai/2026/whisper_or_scream",
