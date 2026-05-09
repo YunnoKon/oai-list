@@ -113,6 +113,24 @@
             "solPath": null
           },
           {
+            "name": "decision_trees",
+            "pretty": "Decision Trees",
+            "probPath": "problems/polish-oai/2026/decision_trees",
+            "solPath": null
+          },
+          {
+            "name": "gan_coloring",
+            "pretty": "Gan Coloring",
+            "probPath": "problems/polish-oai/2026/gan_coloring",
+            "solPath": null
+          },
+          {
+            "name": "hidden_categories",
+            "pretty": "Hidden Categories",
+            "probPath": "problems/polish-oai/2026/hidden_categories",
+            "solPath": null
+          },
+          {
             "name": "multilabel_classification",
             "pretty": "Multilabel Classification",
             "probPath": "problems/polish-oai/2026/multilabel_classification",
@@ -146,6 +164,12 @@
             "name": "the_void",
             "pretty": "The Void",
             "probPath": "problems/polish-oai/2026/the_void",
+            "solPath": null
+          },
+          {
+            "name": "token_predictor",
+            "pretty": "Token Predictor",
+            "probPath": "problems/polish-oai/2026/token_predictor",
             "solPath": null
           },
           {
